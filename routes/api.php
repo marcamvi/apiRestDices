@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  //  return $request->user();
+//});
+
+Route::prefix('/user')->group(function() {
+    Route::post('/players', 'App\Http\Controllers\RegisterController@register');
+    Route::post('/login', 'App\Http\Controllers\LoginController@login');
 });
