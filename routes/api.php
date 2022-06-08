@@ -21,4 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/user')->group(function() {
     Route::post('/players', 'App\Http\Controllers\RegisterController@register');
     Route::post('/login', 'App\Http\Controllers\LoginController@login');
+    Route::middleware('auth:api')->get('/all', 'App\Http\Controllers\UserController@all');
+    Route::put('/players/{id}', 'App\Http\Controllers\LoginController@login');
 });
