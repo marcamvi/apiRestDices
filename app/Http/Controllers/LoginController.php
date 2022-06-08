@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class LoginController extends Controller
 {
     public function login (Request $request){
@@ -16,11 +17,11 @@ class LoginController extends Controller
             ], 422);
         }
         
-        $accesToken = Auth::user()->createToken('authUserToken')->accesToken;
+        $accessToken = Auth::user()->createToken('authUserToken')->accessToken;
         
         return response ([
            "user" => Auth::user(),
-            "acces_token" => $accesToken
+            "access_token" => $accessToken
         ]);
     }
 }
