@@ -29,10 +29,7 @@ class RegisterController extends Controller
         
         $accesToken = $user->createToken('authToken')->accessToken;
         
-        return response ([
-            'user' => $user,
-            'access_token' => $accesToken
-        ]);
+        return response (['message' => 'Usuario '.$user['name'].' creado con éxito.']);
         
     }
 }
