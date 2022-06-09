@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  //  return $request->user();
+//});
+
+
+    Route::post('/players', 'App\Http\Controllers\RegisterController@register');
+    Route::post('/login', 'App\Http\Controllers\LoginController@login');
+    Route::middleware('auth:api')->get('/all', 'App\Http\Controllers\UserController@all');
+    
+    Route::put('/players/{id}', [UserController::class, 'update'])->middleware('auth:api');
