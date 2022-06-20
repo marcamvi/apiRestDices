@@ -35,7 +35,7 @@ class GameController extends Controller {
         return Game::where('users_id', $id)->get();
     }
 
-    public function succesRate(Game $game) {
+    public function successRate(Game $game) {
 
         $rate = DB::table('games')
                 ->selectraw('users.name as Nombre, COUNT(games.Derrota_Victoria) as Total_partidas, ROUND(100*SUM(games.Derrota_Victoria=1)/COUNT(games.Derrota_Victoria)) as Porcentaje_Victorias, ROUND(100*SUM(games.Derrota_Victoria=0)/COUNT(games.Derrota_Victoria))as Porcentaje_Derrotas')->join('users', 'games.users_id', '=', 'users.id')->groupby('users.name')->get();

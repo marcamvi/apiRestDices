@@ -31,7 +31,7 @@ Route::post('/players/{id}/games', [GameController::class, 'store'])->middleware
 Route::delete('/players/{id}/games', [GameController::class, 'delete'])->middleware('auth:api');
 Route::get('/players/{id}/games', [GameController::class, 'show'])->middleware('auth:api');
 
-Route::get('/players', [GameController::class, 'succesRate'])->middleware('auth:api');
+Route::get('/players', [GameController::class, 'successRate'])->middleware('auth:api');
 Route::get('/players/ranking', [GameController::class, 'ranking'])->middleware('auth:api');
 Route::get('/players/ranking/loser', [GameController::class, 'rankingLoser'])->middleware('auth:api');
 Route::get('/players/ranking/winner', [GameController::class, 'rankingWinner'])->middleware('auth:api');
