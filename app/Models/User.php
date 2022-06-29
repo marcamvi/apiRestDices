@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -43,5 +45,17 @@ class User extends Authenticatable
     ];
         public function Game () {
         return $this->hasMany(Game::class);
+    }
+        public function logout() : self
+    {
+        auth()->user()->token()->revoke();
+
+        return $this;
+    }
+    protected function role(): Attribute {
+        return new Attribute(
+            get: fn ($value) =>  ["user", "admin"][$value],
+        );
+                   
     }
 }

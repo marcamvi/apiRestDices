@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Game;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 
 class GameController extends Controller {
 
@@ -16,7 +18,7 @@ class GameController extends Controller {
         $throw = new Game;
         $throw->Tirada_Uno = $dice1;
         $throw->Tirada_Dos = $dice2;
-        $throw->users_id = $id;
+        $throw->user_id = $id;
 
         if (($dice1 + $dice2) >= 7) {
             $throw->Derrota_Victoria = 1; //Victoria
@@ -27,39 +29,57 @@ class GameController extends Controller {
         return $throw;
     }
 
-    public function delete($id, Game $game) {
-        $deleted = Game::where('users_id', $id)->delete();
-    }
+    public function delete($id) {
+
+     $gamey= Game::where('user_id',$id)->first('id');
+     $gamesf = Game::find($gamey);
+     $user = User::find($id);
+
+     //$user = Auth::user()->id;
+
+        $this->authorize('delete', $gamesf);
+     $deleted = Game::where('user_id', $id)->delete();
+     //   if ($user == $id) {
+       //     $deleted = Game::where('user_id', $id)->delete();
+                  
+               // }
+        }
+            
+       
+            
+        
+    
 
     public function show($id, Game $game) {
-        return Game::where('users_id', $id)->get();
+        return Game::where('user_id', $id)->get();
     }
 
-    public function successRate(Game $game) {
+    public function successRate(User $user, Game $game) {
 
+        $this->authorize ('successRate');
         $rate = DB::table('games')
-                ->selectraw('users.name as Nombre, COUNT(games.Derrota_Victoria) as Total_partidas, ROUND(100*SUM(games.Derrota_Victoria=1)/COUNT(games.Derrota_Victoria)) as Porcentaje_Victorias, ROUND(100*SUM(games.Derrota_Victoria=0)/COUNT(games.Derrota_Victoria))as Porcentaje_Derrotas')->join('users', 'games.users_id', '=', 'users.id')->groupby('users.name')->get();
+                ->selectraw('users.name as Nombre, COUNT(games.Derrota_Victoria) as Total_partidas, ROUND(100*SUM(games.Derrota_Victoria=1)/COUNT(games.Derrota_Victoria)) as Porcentaje_Victorias, ROUND(100*SUM(games.Derrota_Victoria=0)/COUNT(games.Derrota_Victoria))as Porcentaje_Derrotas')->join('users', 'games.user_id', '=', 'user.id')->groupby('users.name')->get();
 
         return $rate;
     }
     public function ranking(Game $game) {
        
 
-    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.users_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.users_id', '=', 'users.id')->orderby('Porcentaje_total', 'desc')->groupby('users.name')->get();
+    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.user_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.user_id', '=', 'user.id')->orderby('Porcentaje_total', 'desc')->groupby('users.name')->get();
    
         return $totalRate;
     }
         public function rankingLoser(Game $game) {
        
 
-    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.users_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.users_id', '=', 'users.id')->orderby('Porcentaje_total', 'asc')->groupby('users.name')->limit(1)->get();
+    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.user_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.user_id', '=', 'user.id')->orderby('Porcentaje_total', 'asc')->groupby('users.name')->limit(1)->get();
    
         return $totalRate;
     }
         public function rankingWinner(Game $game) {
        
 
-    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.users_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.users_id', '=', 'users.id')->orderby('Porcentaje_total', 'desc')->groupby('users.name')->limit(1)->get();
+    $totalRate = DB::table('games') ->selectraw('users.name as Nombre, COUNT(games.user_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria','=',1)->join('users', 'games.user_id', '=', 'user.id')->orderby('Porcentaje_total', 'desc')->groupby('users.name')->limit(1)->get();
    
         return $totalRate;
     }
