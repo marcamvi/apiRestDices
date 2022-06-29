@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('Tirada_Uno');
             $table->integer('Tirada_Dos');
             $table->boolean('Derrota_Victoria');
-            $table->foreignId('users_id')
+            $table->foreignId('user_id')
                     ->constrained('users')->OnDelete('cascade');                   
             $table->timestamps();
         }); 
