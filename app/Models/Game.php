@@ -14,12 +14,6 @@ class Game extends Model
     public function User() {
         return $this->belongsTo(User::class);
     }
-    public static function boot()
-    {
-      parent::boot();
-      static::creating(function ($game) {
-      $game->user_id = Auth::id();
-      });
-   }
+
     
 }

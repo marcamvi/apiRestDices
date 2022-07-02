@@ -14,10 +14,10 @@ class RegisterController extends Controller
     public function register (Request $request) {
         if ($request['name']==null) {
             
-            $validatedData=$request->validate(['email' => 'unique:users|required|email', 'password' => 'required|confirmed', 'name'=>'nullable']);
+            $validatedData=$request->validate(['email' => 'unique:users|required|email', 'password' => 'required|confirmed', 'name'=>'nullable', 'role' => 'required']);
             $validatedData['name']='Anónimo';
         } else {
-            $validatedData =$request->validate(['name'=>'unique:users|max:20' , 'email' => 'unique:users|required|email', 'password' => 'required|confirmed']);
+            $validatedData =$request->validate(['name'=>'unique:users|max:20' , 'email' => 'unique:users|required|email', 'password' => 'required|confirmed', 'role' => 'required']);
         }
     
 
