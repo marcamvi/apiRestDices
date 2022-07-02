@@ -6,7 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -41,4 +43,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+        public function Game () {
+        return $this->hasMany(Game::class);
+    }
+        public function logout() : self
+    {
+        auth()->user()->token()->revoke();
+
+        return $this;
+    }
+    protected function role(): Attribute {
+        return new Attribute(
+            set: fn ($value) =>  ["0", "1"][$value], //0 user, 1 admin
+        );
+                   
+    }
 }

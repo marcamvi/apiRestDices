@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -14,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+       Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->tinyInteger('role')->default(0);
-            $table->rememberToken();
+            $table->integer('Tirada_Uno');
+            $table->integer('Tirada_Dos');
+            $table->boolean('Derrota_Victoria');
+            $table->foreignId('user_id')
+                    ->constrained('users')->OnDelete('cascade');                   
             $table->timestamps();
-        });
+        }); 
     }
 
     /**
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('games');
     }
 };
