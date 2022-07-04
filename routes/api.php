@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\EnsureTokenIsValid;
 
@@ -25,8 +26,8 @@ Route::middleware('auth:api')->get('/user', function(Request $request) {
     return $request->user();
 });
 
-Route::post('/players', 'App\Http\Controllers\RegisterController@register');
-Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/players', [RegisterController::class, 'register'])->name('register');
+Route::post('/login', [Login::class, 'login']);
 Route::middleware('auth:api')->get('/all', 'App\Http\Controllers\UserController@all');
 
 Route::middleware(['auth:api'])->group(function () {
