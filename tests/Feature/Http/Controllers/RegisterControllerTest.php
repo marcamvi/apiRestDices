@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase {
 
- //use RefreshDatabase;
+    use RefreshDatabase;
 
     /**
      * A basic feature test example.
@@ -18,43 +18,71 @@ class RegisterControllerTest extends TestCase {
      * @return void
      */
     public function test_register_user_on_database() {
-        $user = User::factory()->create([
-            'name' => 'Test8',
-            'email' => 'test8@gmail.com',
-            'password' => '123456',
-            'role' => 0]);
+        $user = User::factory()->create();
         $response = $this->post('/api/players', $user->toArray());
         $this->assertDatabaseHas('users', $user->toArray());
-        }
+    }
+
     public function test_register_user_status_ok() {
+      $this->artisan('passport:install');
         $user = [
-            'name' => 'test7',
-            'email' => 'test7@gmail.com',
+            'name' => 'test99',
+            'email' => 'test99@gmail.com',
             'password' => '123456',
             'password_confirmation' => '123456',
             'role' => 0];
-        
+
         $response = $this->post('/api/players', $user);
-        
+
         $response->assertStatus(201);
-        }
-        public function test_register_user_with_empty_name () {
-        $user = User::factory()->create([
+    }
+
+    public function test_register_user_with_empty_name() {
+        $this->artisan('passport:install');
+        $user = [
             'name' => '',
-            'email' => 'test6@gmail.com',
+            'email' => 'test99@gmail.com',
             'password' => '123456',
-            'role' => 0]);
-        $response = $this->post('/api/players', $user->toArray());
-        $this->assertDatabaseHas('users', $user->toArray());
-        }
-        public function test_register_user_with_empty_values () {
-         $user = [
-            'name' => 'test5',
+            'password_confirmation' => '123456',
+            'role' => 0];
+
+        $response = $this->post('/api/players', $user);
+
+        $response->assertStatus(201);
+    }
+
+    public function test_register_user_with_empty_email() {
+        $this->artisan('passport:install');
+        $user = [
+            'name' => 'test97',
             'email' => '',
             'password' => '123456',
             'password_confirmation' => '123456',
             'role' => 0];
         $response = $this->postJson('/api/players', $user);
         $response->assertStatus(422);
-        }
+    }
+        public function test_register_user_with_empty_password() {
+        $this->artisan('passport:install');
+        $user = [
+            'name' => 'test',
+            'email' => 'test@gmail.com',
+            'password' => '',
+            'password_confirmation' => '',
+            'role' => 0];
+        $response = $this->postJson('/api/players', $user);
+        $response->assertStatus(422);
+    }
+            public function test_register_user_with_wrong_password_confirmation() {
+        $this->artisan('passport:install');
+        $user = [
+            'name' => 'test',
+            'email' => 'test@gmail.com',
+            'password' => '123456',
+            'password_confirmation' => '12345',
+            'role' => 0];
+        $response = $this->postJson('/api/players', $user);
+        $response->assertStatus(422);
+    }
+
 }

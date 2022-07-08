@@ -27,14 +27,13 @@ Route::middleware('auth:api')->get('/user', function(Request $request) {
 });
 
 Route::post('/players', [RegisterController::class, 'register'])->name('register');
-Route::post('/login', [Login::class, 'login']);
-Route::middleware('auth:api')->get('/all', 'App\Http\Controllers\UserController@all');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::middleware(['auth:api'])->group(function () {
     
 Route::post('logout', [LoginController::class, 'logout']);
-
-Route::put('/players/{id}', [UserController::class, 'update']);//user
+Route::get('/all', [UserController::class, 'all'])->name('all');
+Route::put('/players/{id}', [UserController::class, 'update'])->name('update');//user
 
 Route::post('/players/{id}/games', [GameController::class, 'store']);//user
 Route::delete('/players/{id}/games', [GameController::class, 'delete']);//user

@@ -14,7 +14,7 @@ class UserController extends Controller {
         if (Auth::user()->role !== 1) {
             return response(['message' => 'No tienes permiso para acceder a este apartado.'], status: 403);
         } else {
-            return User::all();
+            return $users = User::all();
         }
     }
 
