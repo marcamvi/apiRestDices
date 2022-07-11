@@ -7,6 +7,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\EnsureTokenIsValid;
+use App\Http\Middleware;
 
 /*
   |--------------------------------------------------------------------------
@@ -35,12 +36,12 @@ Route::post('logout', [LoginController::class, 'logout']);
 Route::get('/all', [UserController::class, 'all'])->name('all');
 Route::put('/players/{id}', [UserController::class, 'update'])->name('update');//user
 
-Route::post('/players/{id}/games', [GameController::class, 'store']);//user
-Route::delete('/players/{id}/games', [GameController::class, 'delete']);//user
-Route::get('/players/{id}/games', [GameController::class, 'show']);
+Route::post('/players/{id}/games', [GameController::class, 'store'])->name('store');//user
+Route::delete('/players/{id}/games', [GameController::class, 'delete'])->name('delete');//user
+Route::get('/players/{id}/games', [GameController::class, 'show'])->name('show');
 
-Route::get('/players', [GameController::class, 'successRate']);//user
-Route::get('/players/ranking', [GameController::class, 'ranking']);
-Route::get('/players/ranking/loser', [GameController::class, 'rankingLoser']);
-Route::get('/players/ranking/winner', [GameController::class, 'rankingWinner']);
+Route::get('/players', [GameController::class, 'successRate'])->name('successRate');//user
+Route::get('/players/ranking', [GameController::class, 'ranking'])->name('ranking');
+Route::get('/players/ranking/loser', [GameController::class, 'rankingLoser'])->name('rankingLoser');
+Route::get('/players/ranking/winner', [GameController::class, 'rankingWinner'])->name('rankingWinner');
 });

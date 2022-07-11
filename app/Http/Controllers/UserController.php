@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller {
 
     public function all() {
-        if (Auth::user()->role !== 1) {
+        if (Auth::user()->role != "1") {
             return response(['message' => 'No tienes permiso para acceder a este apartado.'], status: 403);
         } else {
             return $users = User::all();
@@ -34,7 +34,7 @@ class UserController extends Controller {
             } else {
                 return response([
                     "message" => "Usuario no autorizado."
-                        ], 403);
+                        ], 401);
             }
             $user->update($request->all());
             return response([

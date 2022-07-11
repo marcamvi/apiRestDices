@@ -8,6 +8,7 @@ use Laravel\Passport\Passport;
 use App\Models\User;
 use Tests\TestCase;
 
+
 class RegisterControllerTest extends TestCase {
 
     use RefreshDatabase;
@@ -73,6 +74,7 @@ class RegisterControllerTest extends TestCase {
         $response = $this->postJson('/api/players', $user);
         $response->assertStatus(422);
     }
+    
             public function test_register_user_with_wrong_password_confirmation() {
         $this->artisan('passport:install');
         $user = [
@@ -82,6 +84,23 @@ class RegisterControllerTest extends TestCase {
             'password_confirmation' => '12345',
             'role' => 0];
         $response = $this->postJson('/api/players', $user);
+        $response->assertStatus(422);
+    }
+                public function test_register_user_with_existing_name_or_email() {
+        $this->artisan('passport:install');
+        $user = [
+            'name' => 'test',
+            'email' => 'test@gmail.com',
+            'password' => '123456',
+            'password_confirmation' => '12345',
+            'role' => 0];
+                $user2 = [
+            'name' => 'test',
+            'email' => 'test@gmail.com',
+            'password' => '123456',
+            'password_confirmation' => '12345',
+            'role' => 0];
+        $response = $this->postJson('/api/players', $user2);
         $response->assertStatus(422);
     }
 
