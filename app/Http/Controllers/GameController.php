@@ -20,7 +20,7 @@ class GameController extends Controller {
             $throw->Tirada_Uno = $dice1;
             $throw->Tirada_Dos = $dice2;
             $throw->user_id = $id;
-            if (($dice1 + $dice2) >= 7) {
+            if (($dice1 + $dice2) == 7) {
                 $throw->Derrota_Victoria = 1; //Victoria
             } else {
                 $throw->Derrota_Victoria = 0; //Derrota
