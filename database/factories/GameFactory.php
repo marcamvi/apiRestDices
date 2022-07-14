@@ -21,7 +21,7 @@ class GameFactory extends Factory
         $dice1 = rand(1, 6);
         $dice2 = rand(1, 6);
 
-            if (($dice1 + $dice2) >= 7) {
+            if (($dice1 + $dice2) == 7) {
                 $throw = 1; //Victoria
             } else {
                 $throw = 0; //Derrota

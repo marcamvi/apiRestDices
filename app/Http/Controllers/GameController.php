@@ -110,7 +110,7 @@ class GameController extends Controller {
 
     public function rankingWinner(Game $game) {
 
-        if (Auth::user()->role !== "1") {
+        if (Auth::user()->role != "1") {
             return response(['message' => 'No tienes permiso para acceder a este apartado.'], status: 403);
         } else {
             $totalRate = DB::table('games')->selectraw('users.name as Nombre, COUNT(games.user_id) as Total_Victorias, ROUND(100*COUNT(games.Derrota_Victoria)/(SELECT COUNT(games.Derrota_Victoria) FROM games WHERE games.Derrota_Victoria=1)) as Porcentaje_total')->where('games.Derrota_Victoria', '=', 1)->join('users', 'games.user_id', '=', 'users.id')->orderby('Porcentaje_total', 'desc')->groupby('users.name')->limit(1)->get();
